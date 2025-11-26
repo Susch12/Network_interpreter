@@ -1,0 +1,38 @@
+programa ejemplo; 
+define maquinas
+  A,B,C, nodo1, nodo2;
+define concentradores
+  uno=4, dos=8;
+define coaxial
+  seg1=10;
+
+modulo primero;
+inicio 
+  colocaCoaxial(seg1, 23,50, derecha);
+  coloca(nodo1,55,55);
+  maquinaCoaxial(nodo1, seg1, 3);
+  si (seg1.completo= 0) inicio
+    coloca(nodo2, 50,70);
+    asignaMaquinaCoaxial(nodo2, seg1);
+    si (seg1.completo=0) inicio
+      coloca(C,100,70);
+      asignaMaquinaCoaxial(C, seg1);
+      si (uno.coaxial=1) && (uno.p[1]=0) inicio
+        uneMaquinaPuerto(seg1,uno,1);
+      fin
+    fin
+  fin
+fin
+
+inicio
+  coloca(A,100,20);
+  coloca(B,130,20);
+  coloca(dos, 120,30);
+  uneMaquinaPuerto(A,dos, 3);
+  uneMaquinaPuerto(B,dos,7);
+  si (uno.presente=1) inicio
+    uneMaquinaPuerto(uno,dos,5);
+  fin
+  primero;
+fin.
+

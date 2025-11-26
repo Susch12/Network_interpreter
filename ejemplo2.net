@@ -1,0 +1,12 @@
+programa ejemplo2;
+define maquinas
+  x23, y34;
+define segmento
+  Coax1=10;
+inicio
+  coloca(x23,30,50);
+  coloca(y34,30,100);
+  colocaCoaxial(Coax1, 40, 50, abajo);
+  maquinaCoaxial(x23,Coax1,1);
+  maquinaCoaxial(y34,Coax1,10);
+fin

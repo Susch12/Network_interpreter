@@ -1,0 +1,18 @@
+[package]
+name = "network_interpreter"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# Lexer generation
+logos = "0.13"
+
+# Terminal colors (para errores bonitos)
+colored = "2.0"
+
+# GUI framework para visualización
+macroquad = "0.4"
+
+[dev-dependencies]
+# Para testing
+criterion = "0.5"
