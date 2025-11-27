@@ -11,7 +11,7 @@ logos = "0.13"
 colored = "2.0"
 
 # GUI framework para visualización
-macroquad = "0.4"
+eframe = "0.29"
 
 [dev-dependencies]
 # Para testing

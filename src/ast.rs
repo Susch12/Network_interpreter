@@ -268,6 +268,8 @@ pub enum Direccion {
 
 impl Program {
     pub fn pretty_print(&self) {
+        use std::io::{self, Write};
+
         println!("\n{}", "═".repeat(80));
         println!("AST del Programa: {}", self.nombre);
         println!("{}", "═".repeat(80));
@@ -290,11 +292,14 @@ impl Program {
         }
 
         println!("{}\n", "═".repeat(80));
+        let _ = io::stdout().flush();
     }
 }
 
 impl Definitions {
     pub fn pretty_print(&self) {
+        use std::io::{self, Write};
+
         if !self.maquinas.is_empty() {
             println!("\n📦 Máquinas declaradas: {}", self.maquinas.len());
             for (i, maq) in self.maquinas.iter().enumerate() {
@@ -306,7 +311,7 @@ impl Definitions {
             println!("\n🔌 Concentradores declarados: {}", self.concentradores.len());
             for (i, conc) in self.concentradores.iter().enumerate() {
                 let coax_info = if conc.tiene_coaxial { " + coaxial" } else { "" };
-                println!("   {}. {} = {} puertos{} (línea {})", 
+                println!("   {}. {} = {} puertos{} (línea {})",
                          i + 1, conc.nombre, conc.puertos, coax_info, conc.location.line);
             }
         }
@@ -314,9 +319,11 @@ impl Definitions {
         if !self.coaxiales.is_empty() {
             println!("\n📡 Cables coaxiales declarados: {}", self.coaxiales.len());
             for (i, coax) in self.coaxiales.iter().enumerate() {
-                println!("   {}. {} = {}m (línea {})", 
+                println!("   {}. {} = {}m (línea {})",
                          i + 1, coax.nombre, coax.longitud, coax.location.line);
             }
         }
+
+        let _ = io::stdout().flush();
     }
 }

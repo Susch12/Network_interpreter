@@ -203,6 +203,7 @@ fn main() {
 
 fn print_symbol_table(table: &semantic::SymbolTable) {
     use colored::*;
+    use std::io::{self, Write};
 
     println!("\n{}", "═".repeat(80));
     println!("{}", "TABLA DE SÍMBOLOS".cyan().bold());
@@ -252,9 +253,12 @@ fn print_symbol_table(table: &semantic::SymbolTable) {
     }
 
     println!("\n{}", "═".repeat(80));
+    let _ = io::stdout().flush();
 }
 
 fn print_network_state(env: &interpreter::Environment) {
+    use std::io::{self, Write};
+
     println!("\n{}", "═".repeat(80));
     println!("{}", "ESTADO DE LA RED DESPUÉS DE LA EJECUCIÓN".cyan().bold());
     println!("{}", "═".repeat(80));
@@ -342,6 +346,7 @@ fn print_network_state(env: &interpreter::Environment) {
     }
 
     println!("\n{}", "═".repeat(80));
+    let _ = io::stdout().flush();
 }
 
 fn print_token_statistics(tokens: &[lexer::TokenInfo]) {

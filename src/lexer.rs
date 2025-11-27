@@ -192,11 +192,41 @@ impl Lexer {
         let mut lex = Token::lexer(&self.input);
         let mut line = 1;
         let mut column = 1;
+        let mut last_pos = 0; // Última posición procesada en el input
 
         while let Some(result) = lex.next() {
             let span = lex.span();
             let lexeme = lex.slice().to_string();
             let length = span.len();
+
+            // Procesar todo el texto entre last_pos y span.start para actualizar line/column
+            // Esto incluye el whitespace que logos::skip omitió
+            if last_pos < span.start {
+                for c in self.input[last_pos..span.start].chars() {
+                    if c == '\n' {
+                        line += 1;
+                        column = 1;
+                    } else {
+                        column += 1;
+                    }
+                }
+            }
+
+            // Guardar la posición del token
+            let token_line = line;
+            let token_column = column;
+
+            // Actualizar posición después del token actual
+            for c in lexeme.chars() {
+                if c == '\n' {
+                    line += 1;
+                    column = 1;
+                } else {
+                    column += 1;
+                }
+            }
+
+            last_pos = span.end;
 
             match result {
                 Ok(token) => {
@@ -209,29 +239,19 @@ impl Lexer {
 
                     self.tokens.push(TokenInfo {
                         token: final_token,
-                        line,
-                        column,
+                        line: token_line,
+                        column: token_column,
                         length,
                         lexeme: lexeme.clone(),
                     });
                 }
                 Err(_) => {
                     self.errors.push(LexerError {
-                        line,
-                        column,
+                        line: token_line,
+                        column: token_column,
                         length,
                         message: format!("Token inválido: '{}'", lexeme),
                     });
-                }
-            }
-
-            // Actualizar posición
-            for c in lexeme.chars() {
-                if c == '\n' {
-                    line += 1;
-                    column = 1;
-                } else {
-                    column += 1;
                 }
             }
         }
