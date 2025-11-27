@@ -333,9 +333,19 @@ impl SemanticAnalyzer {
         // Paso 1: Analizar definiciones
         self.analyze_definitions(&program.definiciones);
 
-        // Paso 2: Analizar módulos
+        // Paso 2a: Registrar todos los módulos primero (sin analizar contenido)
+        // Esto permite que los módulos se llamen entre sí sin importar el orden
         for modulo in &program.modulos {
-            self.analyze_module(modulo);
+            if let Err(msg) = self.symbol_table.definir_modulo(modulo.nombre.clone(), modulo.location.clone()) {
+                self.errors.push(SemanticError::new(msg, modulo.location.clone()));
+            }
+        }
+
+        // Paso 2b: Ahora analizar el contenido de los módulos
+        for modulo in &program.modulos {
+            for stmt in &modulo.sentencias {
+                self.analyze_statement(stmt);
+            }
         }
 
         // Paso 3: Analizar sentencias principales

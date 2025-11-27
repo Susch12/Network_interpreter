@@ -226,13 +226,17 @@ impl Environment {
 
 pub struct Interpreter {
     pub env: Environment,
+    module_call_stack: Vec<String>, // Track module calls to detect cycles
 }
 
 impl Interpreter {
     pub fn new(symbol_table: &SymbolTable) -> Self {
         let mut env = Environment::new();
         env.inicializar_desde_simbolos(symbol_table);
-        Self { env }
+        Self {
+            env,
+            module_call_stack: Vec::new(),
+        }
     }
 
     pub fn ejecutar(&mut self, program: &Program) -> Result<(), String> {
@@ -590,12 +594,35 @@ impl Interpreter {
             }
 
             Statement::LlamadaModulo { nombre, .. } => {
+                // Verificar si el módulo ya está en la pila de llamadas (ciclo)
+                if self.module_call_stack.contains(nombre) {
+                    // Construir la cadena de llamadas para el error
+                    let mut call_chain = self.module_call_stack.clone();
+                    call_chain.push(nombre.clone());
+                    let chain_str = call_chain.join(" -> ");
+                    return Err(format!(
+                        "Llamada recursiva detectada: {}\nLos módulos no pueden llamarse a sí mismos directa o indirectamente",
+                        chain_str
+                    ));
+                }
+
                 // Obtener las sentencias del módulo
                 if let Some(stmts) = self.env.modulos.get(nombre).cloned() {
-                    for stmt in &stmts {
-                        self.exec_statement(stmt)?;
-                    }
-                    Ok(())
+                    // Agregar módulo a la pila de llamadas
+                    self.module_call_stack.push(nombre.clone());
+
+                    // Ejecutar sentencias del módulo
+                    let result = (|| {
+                        for stmt in &stmts {
+                            self.exec_statement(stmt)?;
+                        }
+                        Ok(())
+                    })();
+
+                    // Remover módulo de la pila (siempre, incluso si hay error)
+                    self.module_call_stack.pop();
+
+                    result
                 } else {
                     Err(format!("Módulo '{}' no encontrado", nombre))
                 }
