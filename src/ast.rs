@@ -277,7 +277,7 @@ impl Program {
         self.definiciones.pretty_print();
 
         if !self.modulos.is_empty() {
-            println!("\n📦 Módulos definidos: {}", self.modulos.len());
+            println!("\n Módulos definidos: {}", self.modulos.len());
             for (i, modulo) in self.modulos.iter().enumerate() {
                 println!("   {}. modulo {} (línea {}) - {} sentencias",
                          i + 1, modulo.nombre, modulo.location.line, modulo.sentencias.len());
@@ -285,7 +285,7 @@ impl Program {
         }
 
         if !self.sentencias.is_empty() {
-            println!("\n🔧 Sentencias principales: {}", self.sentencias.len());
+            println!("\n Sentencias principales: {}", self.sentencias.len());
             for (i, stmt) in self.sentencias.iter().enumerate() {
                 println!("   {}. {:?}", i + 1, format!("{:?}", stmt).chars().take(60).collect::<String>());
             }
@@ -301,14 +301,14 @@ impl Definitions {
         use std::io::{self, Write};
 
         if !self.maquinas.is_empty() {
-            println!("\n📦 Máquinas declaradas: {}", self.maquinas.len());
+            println!("\n Máquinas declaradas: {}", self.maquinas.len());
             for (i, maq) in self.maquinas.iter().enumerate() {
                 println!("   {}. {} (línea {})", i + 1, maq.nombre, maq.location.line);
             }
         }
 
         if !self.concentradores.is_empty() {
-            println!("\n🔌 Concentradores declarados: {}", self.concentradores.len());
+            println!("\n Concentradores declarados: {}", self.concentradores.len());
             for (i, conc) in self.concentradores.iter().enumerate() {
                 let coax_info = if conc.tiene_coaxial { " + coaxial" } else { "" };
                 println!("   {}. {} = {} puertos{} (línea {})",
@@ -317,7 +317,7 @@ impl Definitions {
         }
 
         if !self.coaxiales.is_empty() {
-            println!("\n📡 Cables coaxiales declarados: {}", self.coaxiales.len());
+            println!("\n Cables coaxiales declarados: {}", self.coaxiales.len());
             for (i, coax) in self.coaxiales.iter().enumerate() {
                 println!("   {}. {} = {}m (línea {})",
                          i + 1, coax.nombre, coax.longitud, coax.location.line);

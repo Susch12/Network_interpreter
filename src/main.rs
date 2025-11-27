@@ -17,7 +17,7 @@ use semantic::SemanticAnalyzer;
 use interpreter::{Interpreter, ConexionMaquina};
 
 fn main() {
-    println!("{}", "=== PROYECTO COMPLETO: FASES 1-5 ===".cyan().bold());
+    println!("{}", "=== Network Interpreter v1 ===".cyan().bold());
     
     let args: Vec<String> = env::args().collect();
 
@@ -68,7 +68,7 @@ fn main() {
     println!();
 
     // ANÁLISIS LÉXICO
-    println!("{}", "📝 Analizando léxicamente...".yellow().bold());
+    println!("{}", "Analizando léxicamente...".yellow().bold());
     
     let mut lexer = Lexer::new(source.clone());
     
@@ -108,45 +108,45 @@ fn main() {
             }
             println!("{}", "─".repeat(90));
 
-            println!("\n{}", "✅ Análisis léxico completado exitosamente".green().bold());
+            println!("\n{}", "Análisis léxico completado exitosamente".green().bold());
 
             // ========== ANÁLISIS SINTÁCTICO ==========
-            println!("\n{}", "📝 Analizando sintácticamente...".yellow().bold());
+            println!("\n{}", "Analizando sintácticamente...".yellow().bold());
 
             let mut parser = Parser::new(tokens.clone());
 
             match parser.parse() {
                 Ok(programa) => {
-                    println!("{}", "✅ Análisis sintáctico completado exitosamente".green().bold());
+                    println!("{}", "Análisis sintáctico completado exitosamente".green().bold());
 
                     // Mostrar AST
                     programa.pretty_print();
 
                     // ========== ANÁLISIS SEMÁNTICO ==========
-                    println!("\n{}", "📝 Analizando semánticamente...".yellow().bold());
+                    println!("\n{}", "Analizando semánticamente...".yellow().bold());
 
                     let mut semantic_analyzer = SemanticAnalyzer::new();
 
                     match semantic_analyzer.analyze(&programa) {
                         Ok(_) => {
-                            println!("{}", "✅ Análisis semántico completado exitosamente".green().bold());
+                            println!("{}", "Análisis semántico completado exitosamente".green().bold());
 
                             // Mostrar tabla de símbolos
                             print_symbol_table(&semantic_analyzer.symbol_table);
 
                             // ========== EJECUCIÓN DEL PROGRAMA ==========
-                            println!("\n{}", "🚀 Ejecutando programa...".yellow().bold());
+                            println!("\n{}", "Ejecutando programa...".yellow().bold());
 
                             let mut interpreter = Interpreter::new(&semantic_analyzer.symbol_table);
 
                             match interpreter.ejecutar(&programa) {
                                 Ok(_) => {
-                                    println!("{}", "✅ Ejecución completada exitosamente".green().bold());
+                                    println!("{}", "Ejecución completada exitosamente".green().bold());
 
                                     // Mostrar output del programa
                                     let output = interpreter.env.obtener_output();
                                     if !output.is_empty() {
-                                        println!("\n{}", "📤 OUTPUT DEL PROGRAMA:".cyan().bold());
+                                        println!("\n{}", "OUTPUT DEL PROGRAMA:".cyan().bold());
                                         println!("{}", "═".repeat(80));
                                         println!("{}", output);
                                         println!("{}", "═".repeat(80));
@@ -157,16 +157,16 @@ fn main() {
 
                                     // Visualizar si se especificó la opción --visualize
                                     if args.contains(&"--visualize".to_string()) || args.contains(&"-v".to_string()) {
-                                        println!("\n{}", "🖼️  Lanzando visualizador...".cyan().bold());
+                                        println!("\n{}", "  Lanzando visualizador...".cyan().bold());
                                         if let Err(e) = visualizer::run(interpreter.env) {
                                             eprintln!("{} {}", "Error al lanzar visualizador:".red().bold(), e);
                                         }
                                     } else {
-                                        println!("\n{}", "💡 Tip: Usa --visualize o -v para ver la topología gráficamente".yellow());
+                                        println!("\n{}", "Tip: Usa --visualize o -v para ver la topología gráficamente".yellow());
                                     }
                                 }
                                 Err(runtime_error) => {
-                                    println!("\n{} {}", "❌ Error de ejecución:".red().bold(), runtime_error);
+                                    println!("\n{} {}", " Error de ejecución:".red().bold(), runtime_error);
                                     process::exit(1);
                                 }
                             }
@@ -210,7 +210,7 @@ fn print_symbol_table(table: &semantic::SymbolTable) {
     println!("{}", "═".repeat(80));
 
     if !table.maquinas.is_empty() {
-        println!("\n{} Máquinas:", "📦".green());
+        println!("{}", "\nMáquinas:".green());
         for (nombre, sym) in &table.maquinas {
             let estado = if sym.presente { "colocada".green() } else { "no colocada".yellow() };
             println!("  • {} - {}", nombre.bold(), estado);
@@ -218,7 +218,7 @@ fn print_symbol_table(table: &semantic::SymbolTable) {
     }
 
     if !table.concentradores.is_empty() {
-        println!("\n{} Concentradores:", "🔌".green());
+        println!("{}", "\nConcentradores:".green());
         for (nombre, sym) in &table.concentradores {
             let estado = if sym.presente { "colocado".green() } else { "no colocado".yellow() };
             let coax = if sym.tiene_coaxial { "+ coaxial" } else { "" };
@@ -232,7 +232,7 @@ fn print_symbol_table(table: &semantic::SymbolTable) {
     }
 
     if !table.coaxiales.is_empty() {
-        println!("\n{} Cables Coaxiales:", "📡".green());
+        println!("{}", "\nCables Coaxiales:".green());
         for (nombre, sym) in &table.coaxiales {
             let estado = if sym.presente { "colocado".green() } else { "no colocado".yellow() };
             let completo = if sym.completo { "completo".red() } else { "disponible".green() };
@@ -246,7 +246,7 @@ fn print_symbol_table(table: &semantic::SymbolTable) {
     }
 
     if !table.modulos.is_empty() {
-        println!("\n{} Módulos:", "📦".green());
+        println!("{}", "\nMódulos:".green());
         for nombre in table.modulos.keys() {
             println!("  • {}", nombre.bold());
         }
@@ -265,7 +265,7 @@ fn print_network_state(env: &interpreter::Environment) {
 
     // Mostrar máquinas
     if !env.maquinas.is_empty() {
-        println!("\n{} Máquinas:", "💻".green());
+        println!("{}", "\nMáquinas:".green());
         for (nombre, maq) in &env.maquinas {
             let estado = if maq.colocada {
                 format!("colocada en ({}, {})", maq.x, maq.y).green()
@@ -292,7 +292,7 @@ fn print_network_state(env: &interpreter::Environment) {
 
     // Mostrar concentradores
     if !env.concentradores.is_empty() {
-        println!("\n{} Concentradores:", "🔌".green());
+        println!("{}", "\nConcentradores:".green());
         for (nombre, conc) in &env.concentradores {
             let estado = if conc.colocado {
                 format!("colocado en ({}, {})", conc.x, conc.y).green()
@@ -318,7 +318,7 @@ fn print_network_state(env: &interpreter::Environment) {
 
     // Mostrar coaxiales
     if !env.coaxiales.is_empty() {
-        println!("\n{} Cables Coaxiales:", "📡".green());
+        println!("{}", "\nCables Coaxiales:".green());
         for (nombre, coax) in &env.coaxiales {
             let estado = if coax.colocado {
                 format!("colocado en ({}, {}) - dirección: {}", coax.x, coax.y, coax.direccion).green()

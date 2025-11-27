@@ -3,7 +3,6 @@
 
 use crate::lexer::{Token, TokenInfo};
 use crate::ast::*;
-use colored::*;
 
 // ============================================================================
 // ERROR DE PARSEO

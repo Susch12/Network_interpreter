@@ -22,7 +22,7 @@ pub enum Token {
     #[token("coaxial")]
     Coaxial,
     
-    #[token("segmento")] // ⚡ NUEVO: Soporte para "define segmento"
+    #[token("segmento")] //  Soporte para "define segmento"
     Segmento,
     
     #[token("modulo")]

@@ -2,7 +2,6 @@
 // Valida que el programa sea semánticamente correcto
 
 use crate::ast::*;
-use colored::*;
 use std::collections::HashMap;
 
 // ============================================================================
