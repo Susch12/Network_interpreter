@@ -1,0 +1,20 @@
+proyecto/
+├── src/
+│   ├── main.rs
+│   ├── lexer/
+│   │   ├── mod.rs
+│   │   ├── automaton.rs      # Autómata finito
+│   │   ├── token.rs          # Definición de tokens
+│   │   └── scanner.rs        # Scanner que usa el autómata
+│   ├── parser/
+│   │   ├── mod.rs
+│   │   ├── ll1_table.rs      # Tabla LL(1)
+│   │   └── parser.rs         # Parser predictivo
+│   ├── ast.rs
+│   ├── semantic.rs
+│   ├── interpreter.rs
+│   └── visualizer.rs
+├── config/
+│   ├── automaton.txt         # Definición del autómata
+│   └── ll1_table.txt         # Tabla de análisis LL(1)
+└── Cargo.toml

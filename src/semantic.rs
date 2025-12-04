@@ -60,7 +60,7 @@ pub struct ConcentradorSymbol {
 
 impl ConcentradorSymbol {
     pub fn new(nombre: String, puertos: i32, tiene_coaxial: bool, location: Location) -> Self {
-        let mut puertos_ocupados = vec![false; puertos as usize];
+        let puertos_ocupados = vec![false; puertos as usize];
         Self {
             nombre,
             puertos,

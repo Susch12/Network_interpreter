@@ -4,15 +4,18 @@ use std::fs;
 use std::process;
 
 mod lexer;
+#[path = "lexer_new/mod.rs"]
+mod lexer_new;
+mod lexer_bridge;
 mod parser;
+mod parser_ll1;
 mod ast;
 mod error;
 mod semantic;
 mod interpreter;
 mod visualizer;
 
-use lexer::Lexer;
-use parser::Parser;
+use parser_ll1::PredictiveParser;
 use semantic::SemanticAnalyzer;
 use interpreter::{Interpreter, ConexionMaquina};
 
@@ -69,24 +72,22 @@ fn main() {
 
     // ANÁLISIS LÉXICO
     println!("{}", "Analizando léxicamente...".yellow().bold());
-    
-    let mut lexer = Lexer::new(source.clone());
-    
-    match lexer.tokenize() {
+
+    match lexer_bridge::tokenize_with_new_lexer(source.clone()) {
         Ok(tokens) => {
             println!("{} {} tokens generados\n", "✓".green().bold(), tokens.len());
-            
+
             // Estadísticas de tokens
-            print_token_statistics(tokens);
-            
+            print_token_statistics(&tokens);
+
             // Mostrar tabla de tokens
             println!("\n{}", "Tabla de Tokens:".cyan().bold());
             println!("{}", "─".repeat(90));
-            println!("{:<6} {:<8} {:<25} {:<35}", 
+            println!("{:<6} {:<8} {:<25} {:<35}",
                      "Línea", "Columna", "Token", "Lexema");
             println!("{}", "─".repeat(90));
-            
-            for token_info in tokens {
+
+            for token_info in &tokens {
                 let token_str = format!("{:?}", token_info.token);
                 let token_display = if token_str.len() > 23 {
                     format!("{}...", &token_str[..20])
@@ -111,11 +112,12 @@ fn main() {
             println!("\n{}", "Análisis léxico completado exitosamente".green().bold());
 
             // ========== ANÁLISIS SINTÁCTICO ==========
-            println!("\n{}", "Analizando sintácticamente...".yellow().bold());
+            println!("\n{}", "Analizando sintácticamente con parser LL(1)...".yellow().bold());
 
-            let mut parser = Parser::new(tokens.clone());
+            // Usar parser LL(1) predictivo (two-pass approach)
+            let mut parser_ll1 = PredictiveParser::new(tokens.clone());
 
-            match parser.parse() {
+            match parser_ll1.parse() {
                 Ok(programa) => {
                     println!("{}", "Análisis sintáctico completado exitosamente".green().bold());
 
@@ -177,25 +179,14 @@ fn main() {
                         }
                     }
                 }
-                Err(parse_errors) => {
-                    parser::report_parse_errors(&parse_errors, &source, filename);
+                Err(error_msg) => {
+                    eprintln!("\n{} {}", "Error de sintaxis (LL1):".red().bold(), error_msg);
                     process::exit(1);
                 }
             }
         }
-        Err(errors) => {
-            use crate::error::{Diagnostic, report_errors};
-
-            let diagnostics: Vec<Diagnostic> = errors.iter().map(|err| {
-                Diagnostic::lexical_error(
-                    err.line,
-                    err.column,
-                    err.length,
-                    err.message.clone()
-                )
-            }).collect();
-
-            report_errors(&diagnostics, &source, filename);
+        Err(error_msg) => {
+            eprintln!("{} {}", "Error léxico:".red().bold(), error_msg);
             process::exit(1);
         }
     }

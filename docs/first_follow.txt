@@ -1,0 +1,247 @@
+================================================================================
+CONJUNTOS FIRST Y FOLLOW
+================================================================================
+Metodología: Algoritmo iterativo hasta punto fijo
+================================================================================
+
+CONJUNTOS FIRST(α):
+-------------------
+Definición: FIRST(α) = conjunto de terminales que pueden aparecer al inicio
+            de una cadena derivada desde α
+
+FIRST(Programa) = { PROGRAMA }
+
+FIRST(Definiciones) = { DEFINE, ε }
+
+FIRST(DefMaquinas) = { DEFINE, ε }
+
+FIRST(DefConcentradores) = { DEFINE, ε }
+
+FIRST(DefCoaxiales) = { DEFINE, ε }
+
+FIRST(TipoCoaxial) = { COAXIAL, SEGMENTO }
+
+FIRST(ListaMaquinas) = { IDENTIFICADOR }
+
+FIRST(ListaMaquinas') = { COMA, ε }
+
+FIRST(ListaConcentradores) = { IDENTIFICADOR }
+
+FIRST(ListaConcentradores') = { COMA, ε }
+
+FIRST(DeclConcentrador) = { IDENTIFICADOR }
+
+FIRST(OpcionCoaxial) = { PUNTO, ε }
+
+FIRST(ListaCoaxiales) = { IDENTIFICADOR }
+
+FIRST(ListaCoaxiales') = { COMA, ε }
+
+FIRST(DeclCoaxial) = { IDENTIFICADOR }
+
+FIRST(Modulos) = { MODULO, ε }
+
+FIRST(Modulo) = { MODULO }
+
+FIRST(BloqueInicio) = { INICIO }
+
+FIRST(Sentencias) = { COLOCA, COLOCA_COAXIAL, COLOCA_COAXIAL_CONCENTRADOR,
+                      UNE_MAQUINA_PUERTO, ASIGNA_PUERTO, MAQUINA_COAXIAL,
+                      ASIGNA_MAQUINA_COAXIAL, ESCRIBE, SI, IDENTIFICADOR, ε }
+
+FIRST(Sentencia) = { COLOCA, COLOCA_COAXIAL, COLOCA_COAXIAL_CONCENTRADOR,
+                     UNE_MAQUINA_PUERTO, ASIGNA_PUERTO, MAQUINA_COAXIAL,
+                     ASIGNA_MAQUINA_COAXIAL, ESCRIBE, SI, IDENTIFICADOR }
+
+FIRST(SentenciaColoca) = { COLOCA }
+
+FIRST(SentenciaColocaCoaxial) = { COLOCA_COAXIAL }
+
+FIRST(SentenciaColocaCoaxialConcentrador) = { COLOCA_COAXIAL_CONCENTRADOR }
+
+FIRST(SentenciaUneMaquinaPuerto) = { UNE_MAQUINA_PUERTO }
+
+FIRST(SentenciaAsignaPuerto) = { ASIGNA_PUERTO }
+
+FIRST(SentenciaMaquinaCoaxial) = { MAQUINA_COAXIAL }
+
+FIRST(SentenciaAsignaMaquinaCoaxial) = { ASIGNA_MAQUINA_COAXIAL }
+
+FIRST(SentenciaEscribe) = { ESCRIBE }
+
+FIRST(SentenciaSi) = { SI }
+
+FIRST(OpcionSino) = { SINO, ε }
+
+FIRST(LlamadaModulo) = { IDENTIFICADOR }
+
+FIRST(Direccion) = { ARRIBA, ABAJO, IZQUIERDA, DERECHA }
+
+FIRST(Expresion) = { NOT, NUMERO, CADENA, IDENTIFICADOR, PAREN_IZQ }
+
+FIRST(ExpresionOr) = { NOT, NUMERO, CADENA, IDENTIFICADOR, PAREN_IZQ }
+
+FIRST(ExpresionOr') = { OR, ε }
+
+FIRST(ExpresionAnd) = { NOT, NUMERO, CADENA, IDENTIFICADOR, PAREN_IZQ }
+
+FIRST(ExpresionAnd') = { AND, ε }
+
+FIRST(ExpresionRelacional) = { NOT, NUMERO, CADENA, IDENTIFICADOR, PAREN_IZQ }
+
+FIRST(OpRelacional) = { IGUAL, DIFERENTE, MENOR, MAYOR, 
+                        MENOR_IGUAL, MAYOR_IGUAL, ε }
+
+FIRST(OperadorRelacional) = { IGUAL, DIFERENTE, MENOR, MAYOR,
+                               MENOR_IGUAL, MAYOR_IGUAL }
+
+FIRST(ExpresionNot) = { NOT, NUMERO, CADENA, IDENTIFICADOR, PAREN_IZQ }
+
+FIRST(ExpresionPrimaria) = { NUMERO, CADENA, IDENTIFICADOR, PAREN_IZQ }
+
+FIRST(Accesos) = { PUNTO, CORCHETE_IZQ, ε }
+
+FIRST(AccesoCampo) = { PUNTO }
+
+FIRST(AccesoArreglo) = { CORCHETE_IZQ, ε }
+
+================================================================================
+
+CONJUNTOS FOLLOW(A):
+--------------------
+Definición: FOLLOW(A) = conjunto de terminales que pueden aparecer
+            inmediatamente después de A en alguna derivación
+
+FOLLOW(Programa) = { EOF }
+
+FOLLOW(Definiciones) = { MODULO, INICIO }
+
+FOLLOW(DefMaquinas) = { DEFINE, MODULO, INICIO }
+
+FOLLOW(DefConcentradores) = { DEFINE, MODULO, INICIO }
+
+FOLLOW(DefCoaxiales) = { MODULO, INICIO }
+
+FOLLOW(TipoCoaxial) = { IDENTIFICADOR }
+
+FOLLOW(ListaMaquinas) = { PUNTO_COMA }
+
+FOLLOW(ListaMaquinas') = { PUNTO_COMA }
+
+FOLLOW(ListaConcentradores) = { PUNTO_COMA }
+
+FOLLOW(ListaConcentradores') = { PUNTO_COMA }
+
+FOLLOW(DeclConcentrador) = { COMA, PUNTO_COMA }
+
+FOLLOW(OpcionCoaxial) = { COMA, PUNTO_COMA }
+
+FOLLOW(ListaCoaxiales) = { PUNTO_COMA }
+
+FOLLOW(ListaCoaxiales') = { PUNTO_COMA }
+
+FOLLOW(DeclCoaxial) = { COMA, PUNTO_COMA }
+
+FOLLOW(Modulos) = { INICIO }
+
+FOLLOW(Modulo) = { MODULO, INICIO }
+
+FOLLOW(BloqueInicio) = { PUNTO, MODULO, INICIO, FIN, 
+                         COLOCA, COLOCA_COAXIAL, COLOCA_COAXIAL_CONCENTRADOR,
+                         UNE_MAQUINA_PUERTO, ASIGNA_PUERTO, MAQUINA_COAXIAL,
+                         ASIGNA_MAQUINA_COAXIAL, ESCRIBE, SI, IDENTIFICADOR }
+
+FOLLOW(Sentencias) = { FIN }
+
+FOLLOW(Sentencia) = { COLOCA, COLOCA_COAXIAL, COLOCA_COAXIAL_CONCENTRADOR,
+                      UNE_MAQUINA_PUERTO, ASIGNA_PUERTO, MAQUINA_COAXIAL,
+                      ASIGNA_MAQUINA_COAXIAL, ESCRIBE, SI, IDENTIFICADOR, FIN }
+
+FOLLOW(SentenciaColoca) = { COLOCA, COLOCA_COAXIAL, COLOCA_COAXIAL_CONCENTRADOR,
+                            UNE_MAQUINA_PUERTO, ASIGNA_PUERTO, MAQUINA_COAXIAL,
+                            ASIGNA_MAQUINA_COAXIAL, ESCRIBE, SI, IDENTIFICADOR, FIN }
+
+FOLLOW(SentenciaColocaCoaxial) = { COLOCA, COLOCA_COAXIAL, COLOCA_COAXIAL_CONCENTRADOR,
+                                   UNE_MAQUINA_PUERTO, ASIGNA_PUERTO, MAQUINA_COAXIAL,
+                                   ASIGNA_MAQUINA_COAXIAL, ESCRIBE, SI, IDENTIFICADOR, FIN }
+
+FOLLOW(SentenciaColocaCoaxialConcentrador) = { COLOCA, COLOCA_COAXIAL, 
+                                                COLOCA_COAXIAL_CONCENTRADOR,
+                                                UNE_MAQUINA_PUERTO, ASIGNA_PUERTO,
+                                                MAQUINA_COAXIAL, ASIGNA_MAQUINA_COAXIAL,
+                                                ESCRIBE, SI, IDENTIFICADOR, FIN }
+
+FOLLOW(SentenciaUneMaquinaPuerto) = { COLOCA, COLOCA_COAXIAL, COLOCA_COAXIAL_CONCENTRADOR,
+                                      UNE_MAQUINA_PUERTO, ASIGNA_PUERTO, MAQUINA_COAXIAL,
+                                      ASIGNA_MAQUINA_COAXIAL, ESCRIBE, SI, IDENTIFICADOR, FIN }
+
+FOLLOW(SentenciaAsignaPuerto) = { COLOCA, COLOCA_COAXIAL, COLOCA_COAXIAL_CONCENTRADOR,
+                                  UNE_MAQUINA_PUERTO, ASIGNA_PUERTO, MAQUINA_COAXIAL,
+                                  ASIGNA_MAQUINA_COAXIAL, ESCRIBE, SI, IDENTIFICADOR, FIN }
+
+FOLLOW(SentenciaMaquinaCoaxial) = { COLOCA, COLOCA_COAXIAL, COLOCA_COAXIAL_CONCENTRADOR,
+                                    UNE_MAQUINA_PUERTO, ASIGNA_PUERTO, MAQUINA_COAXIAL,
+                                    ASIGNA_MAQUINA_COAXIAL, ESCRIBE, SI, IDENTIFICADOR, FIN }
+
+FOLLOW(SentenciaAsignaMaquinaCoaxial) = { COLOCA, COLOCA_COAXIAL, 
+                                          COLOCA_COAXIAL_CONCENTRADOR,
+                                          UNE_MAQUINA_PUERTO, ASIGNA_PUERTO,
+                                          MAQUINA_COAXIAL, ASIGNA_MAQUINA_COAXIAL,
+                                          ESCRIBE, SI, IDENTIFICADOR, FIN }
+
+FOLLOW(SentenciaEscribe) = { COLOCA, COLOCA_COAXIAL, COLOCA_COAXIAL_CONCENTRADOR,
+                             UNE_MAQUINA_PUERTO, ASIGNA_PUERTO, MAQUINA_COAXIAL,
+                             ASIGNA_MAQUINA_COAXIAL, ESCRIBE, SI, IDENTIFICADOR, FIN }
+
+FOLLOW(SentenciaSi) = { COLOCA, COLOCA_COAXIAL, COLOCA_COAXIAL_CONCENTRADOR,
+                        UNE_MAQUINA_PUERTO, ASIGNA_PUERTO, MAQUINA_COAXIAL,
+                        ASIGNA_MAQUINA_COAXIAL, ESCRIBE, SI, IDENTIFICADOR, FIN }
+
+FOLLOW(OpcionSino) = { COLOCA, COLOCA_COAXIAL, COLOCA_COAXIAL_CONCENTRADOR,
+                       UNE_MAQUINA_PUERTO, ASIGNA_PUERTO, MAQUINA_COAXIAL,
+                       ASIGNA_MAQUINA_COAXIAL, ESCRIBE, SI, IDENTIFICADOR, FIN }
+
+FOLLOW(LlamadaModulo) = { COLOCA, COLOCA_COAXIAL, COLOCA_COAXIAL_CONCENTRADOR,
+                          UNE_MAQUINA_PUERTO, ASIGNA_PUERTO, MAQUINA_COAXIAL,
+                          ASIGNA_MAQUINA_COAXIAL, ESCRIBE, SI, IDENTIFICADOR, FIN }
+
+FOLLOW(Direccion) = { PAREN_DER }
+
+FOLLOW(Expresion) = { PAREN_DER, COMA, CORCHETE_DER, PUNTO_COMA, INICIO }
+
+FOLLOW(ExpresionOr) = { PAREN_DER, COMA, CORCHETE_DER, PUNTO_COMA, INICIO }
+
+FOLLOW(ExpresionOr') = { PAREN_DER, COMA, CORCHETE_DER, PUNTO_COMA, INICIO }
+
+FOLLOW(ExpresionAnd) = { OR, PAREN_DER, COMA, CORCHETE_DER, PUNTO_COMA, INICIO }
+
+FOLLOW(ExpresionAnd') = { OR, PAREN_DER, COMA, CORCHETE_DER, PUNTO_COMA, INICIO }
+
+FOLLOW(ExpresionRelacional) = { AND, OR, PAREN_DER, COMA, CORCHETE_DER, 
+                                PUNTO_COMA, INICIO }
+
+FOLLOW(OpRelacional) = { AND, OR, PAREN_DER, COMA, CORCHETE_DER, 
+                         PUNTO_COMA, INICIO }
+
+FOLLOW(OperadorRelacional) = { NOT, NUMERO, CADENA, IDENTIFICADOR, PAREN_IZQ }
+
+FOLLOW(ExpresionNot) = { IGUAL, DIFERENTE, MENOR, MAYOR, MENOR_IGUAL, 
+                         MAYOR_IGUAL, AND, OR, PAREN_DER, COMA, 
+                         CORCHETE_DER, PUNTO_COMA, INICIO }
+
+FOLLOW(ExpresionPrimaria) = { IGUAL, DIFERENTE, MENOR, MAYOR, MENOR_IGUAL,
+                              MAYOR_IGUAL, AND, OR, PAREN_DER, COMA,
+                              CORCHETE_DER, PUNTO_COMA, INICIO }
+
+FOLLOW(Accesos) = { IGUAL, DIFERENTE, MENOR, MAYOR, MENOR_IGUAL, MAYOR_IGUAL,
+                    AND, OR, PAREN_DER, COMA, CORCHETE_DER, PUNTO_COMA, INICIO }
+
+FOLLOW(AccesoCampo) = { IGUAL, DIFERENTE, MENOR, MAYOR, MENOR_IGUAL, MAYOR_IGUAL,
+                        AND, OR, PAREN_DER, COMA, CORCHETE_DER, PUNTO_COMA, INICIO }
+
+FOLLOW(AccesoArreglo) = { IGUAL, DIFERENTE, MENOR, MAYOR, MENOR_IGUAL, MAYOR_IGUAL,
+                          AND, OR, PAREN_DER, COMA, CORCHETE_DER, PUNTO_COMA, INICIO }
+
+================================================================================
+FIN DE CONJUNTOS FIRST/FOLLOW
+================================================================================

@@ -1,0 +1,110 @@
+# AUTÓMATA FINITO DETERMINISTA PARA LEXER
+# Formato: estado_origen, carácter/rango, estado_destino, [token_si_final]
+
+# Estados iniciales
+STATES
+q0    # Estado inicial
+q1    # Identificadores/palabras reservadas
+q2    # Números
+q3    # Cadenas
+q4    # Operadores
+q5    # Delimitadores
+END_STATES
+
+# Transiciones
+TRANSITIONS
+# Identificadores y palabras reservadas
+q0, [a-zA-Z_], q1
+q1, [a-zA-Z0-9_], q1
+q1, FINAL, IDENTIFIER
+
+# Números
+q0, [0-9], q2
+q2, [0-9], q2
+q2, FINAL, NUMBER
+
+# Cadenas
+q0, ", q3
+q3, [^"\\], q3
+q3, \\, q3_esc
+q3_esc, ANY, q3
+q3, ", q3_final
+q3_final, FINAL, STRING
+
+# Operadores relacionales
+q0, =, q4_eq
+q4_eq, FINAL, EQUAL
+q0, <, q4_lt
+q4_lt, FINAL, LESS
+q4_lt, =, q4_le
+q4_le, FINAL, LESS_EQUAL
+q4_lt, >, q4_ne
+q4_ne, FINAL, NOT_EQUAL
+q0, >, q4_gt
+q4_gt, FINAL, GREATER
+q4_gt, =, q4_ge
+q4_ge, FINAL, GREATER_EQUAL
+
+# Operadores lógicos
+q0, &, q4_and1
+q4_and1, &, q4_and2
+q4_and2, FINAL, AND
+q0, |, q4_or1
+q4_or1, |, q4_or2
+q4_or2, FINAL, OR
+q0, !, q4_not
+q4_not, FINAL, NOT
+
+# Delimitadores
+q0, ,, q5_comma
+q5_comma, FINAL, COMMA
+q0, ;, q5_semi
+q5_semi, FINAL, SEMICOLON
+q0, ., q5_dot
+q5_dot, FINAL, DOT
+q0, (, q5_lparen
+q5_lparen, FINAL, LPAREN
+q0, ), q5_rparen
+q5_rparen, FINAL, RPAREN
+q0, [, q5_lbrack
+q5_lbrack, FINAL, LBRACKET
+q0, ], q5_rbrack
+q5_rbrack, FINAL, RBRACKET
+
+# Espacios en blanco (ignorar)
+q0, [ \t\n\r], q0
+
+# Comentarios
+q0, /, q_comment1
+q_comment1, /, q_comment2
+q_comment2, [^\n], q_comment2
+q_comment2, \n, q0
+
+END_TRANSITIONS
+
+# Palabras reservadas
+KEYWORDS
+programa, PROGRAMA
+define, DEFINE
+maquinas, MAQUINAS
+concentradores, CONCENTRADORES
+coaxial, COAXIAL
+segmento, SEGMENTO
+modulo, MODULO
+inicio, INICIO
+fin, FIN
+si, SI
+sino, SINO
+coloca, COLOCA
+colocaCoaxial, COLOCA_COAXIAL
+colocaCoaxialConcentrador, COLOCA_COAXIAL_CONCENTRADOR
+uneMaquinaPuerto, UNE_MAQUINA_PUERTO
+asignaPuerto, ASIGNA_PUERTO
+maquinaCoaxial, MAQUINA_COAXIAL
+asignaMaquinaCoaxial, ASIGNA_MAQUINA_COAXIAL
+escribe, ESCRIBE
+arriba, ARRIBA
+abajo, ABAJO
+izquierda, IZQUIERDA
+derecha, DERECHA
+END_KEYWORDS

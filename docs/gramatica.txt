@@ -1,0 +1,170 @@
+================================================================================
+GRAMÁTICA FORMAL DEL LENGUAJE DE TOPOLOGÍAS DE RED
+================================================================================
+
+SÍMBOLOS TERMINALES:
+-------------------
+Palabras reservadas:
+    PROGRAMA, DEFINE, MAQUINAS, CONCENTRADORES, COAXIAL, SEGMENTO
+    MODULO, INICIO, FIN, SI, SINO
+    COLOCA, COLOCA_COAXIAL, COLOCA_COAXIAL_CONCENTRADOR
+    UNE_MAQUINA_PUERTO, ASIGNA_PUERTO
+    MAQUINA_COAXIAL, ASIGNA_MAQUINA_COAXIAL
+    ESCRIBE
+    ARRIBA, ABAJO, IZQUIERDA, DERECHA
+
+Operadores:
+    IGUAL (=), MENOR (<), MAYOR (>), MENOR_IGUAL (<=), MAYOR_IGUAL (>=)
+    DIFERENTE (<>), AND (&&), OR (||), NOT (!)
+
+Delimitadores:
+    COMA (,), PUNTO_COMA (;), PUNTO (.)
+    PAREN_IZQ '(', PAREN_DER ')'
+    CORCHETE_IZQ '[', CORCHETE_DER ']'
+
+Literales:
+    IDENTIFICADOR, NUMERO, CADENA
+
+Especiales:
+    EOF (fin de archivo)
+
+================================================================================
+PRODUCCIONES DE LA GRAMÁTICA
+================================================================================
+
+[1] Programa → PROGRAMA IDENTIFICADOR PUNTO_COMA Definiciones Modulos BloqueInicio PUNTO
+
+[2] Definiciones → DefMaquinas DefConcentradores DefCoaxiales
+[3] Definiciones → ε
+
+[4] DefMaquinas → DEFINE MAQUINAS ListaMaquinas PUNTO_COMA
+[5] DefMaquinas → ε
+
+[6] DefConcentradores → DEFINE CONCENTRADORES ListaConcentradores PUNTO_COMA
+[7] DefConcentradores → ε
+
+[8] DefCoaxiales → DEFINE TipoCoaxial ListaCoaxiales PUNTO_COMA
+[9] DefCoaxiales → ε
+
+[10] TipoCoaxial → COAXIAL
+[11] TipoCoaxial → SEGMENTO
+
+[12] ListaMaquinas → IDENTIFICADOR ListaMaquinas'
+
+[13] ListaMaquinas' → COMA IDENTIFICADOR ListaMaquinas'
+[14] ListaMaquinas' → ε
+
+[15] ListaConcentradores → DeclConcentrador ListaConcentradores'
+
+[16] ListaConcentradores' → COMA DeclConcentrador ListaConcentradores'
+[17] ListaConcentradores' → ε
+
+[18] DeclConcentrador → IDENTIFICADOR IGUAL NUMERO OpcionCoaxial
+
+[19] OpcionCoaxial → PUNTO NUMERO
+[20] OpcionCoaxial → ε
+
+[21] ListaCoaxiales → DeclCoaxial ListaCoaxiales'
+
+[22] ListaCoaxiales' → COMA DeclCoaxial ListaCoaxiales'
+[23] ListaCoaxiales' → ε
+
+[24] DeclCoaxial → IDENTIFICADOR IGUAL NUMERO
+
+[25] Modulos → Modulo Modulos
+[26] Modulos → ε
+
+[27] Modulo → MODULO IDENTIFICADOR PUNTO_COMA BloqueInicio
+
+[28] BloqueInicio → INICIO Sentencias FIN
+
+[29] Sentencias → Sentencia Sentencias
+[30] Sentencias → ε
+
+[31] Sentencia → SentenciaColoca
+[32] Sentencia → SentenciaColocaCoaxial
+[33] Sentencia → SentenciaColocaCoaxialConcentrador
+[34] Sentencia → SentenciaUneMaquinaPuerto
+[35] Sentencia → SentenciaAsignaPuerto
+[36] Sentencia → SentenciaMaquinaCoaxial
+[37] Sentencia → SentenciaAsignaMaquinaCoaxial
+[38] Sentencia → SentenciaEscribe
+[39] Sentencia → SentenciaSi
+[40] Sentencia → LlamadaModulo
+
+[41] SentenciaColoca → COLOCA PAREN_IZQ IDENTIFICADOR COMA Expresion COMA Expresion PAREN_DER PUNTO_COMA
+
+[42] SentenciaColocaCoaxial → COLOCA_COAXIAL PAREN_IZQ IDENTIFICADOR COMA Expresion COMA Expresion COMA Direccion PAREN_DER PUNTO_COMA
+
+[43] SentenciaColocaCoaxialConcentrador → COLOCA_COAXIAL_CONCENTRADOR PAREN_IZQ IDENTIFICADOR COMA IDENTIFICADOR PAREN_DER PUNTO_COMA
+
+[44] SentenciaUneMaquinaPuerto → UNE_MAQUINA_PUERTO PAREN_IZQ IDENTIFICADOR COMA IDENTIFICADOR COMA Expresion PAREN_DER PUNTO_COMA
+
+[45] SentenciaAsignaPuerto → ASIGNA_PUERTO PAREN_IZQ IDENTIFICADOR COMA IDENTIFICADOR PAREN_DER PUNTO_COMA
+
+[46] SentenciaMaquinaCoaxial → MAQUINA_COAXIAL PAREN_IZQ IDENTIFICADOR COMA IDENTIFICADOR COMA Expresion PAREN_DER PUNTO_COMA
+
+[47] SentenciaAsignaMaquinaCoaxial → ASIGNA_MAQUINA_COAXIAL PAREN_IZQ IDENTIFICADOR COMA IDENTIFICADOR PAREN_DER PUNTO_COMA
+
+[48] SentenciaEscribe → ESCRIBE PAREN_IZQ Expresion PAREN_DER PUNTO_COMA
+
+[49] SentenciaSi → SI Expresion INICIO Sentencias FIN OpcionSino
+
+[50] OpcionSino → SINO INICIO Sentencias FIN
+[51] OpcionSino → ε
+
+[52] LlamadaModulo → IDENTIFICADOR PUNTO_COMA
+
+[53] Direccion → ARRIBA
+[54] Direccion → ABAJO
+[55] Direccion → IZQUIERDA
+[56] Direccion → DERECHA
+
+-------------------
+EXPRESIONES (precedencia de operadores)
+-------------------
+
+[57] Expresion → ExpresionOr
+
+[58] ExpresionOr → ExpresionAnd ExpresionOr'
+
+[59] ExpresionOr' → OR ExpresionAnd ExpresionOr'
+[60] ExpresionOr' → ε
+
+[61] ExpresionAnd → ExpresionRelacional ExpresionAnd'
+
+[62] ExpresionAnd' → AND ExpresionRelacional ExpresionAnd'
+[63] ExpresionAnd' → ε
+
+[64] ExpresionRelacional → ExpresionNot OpRelacional
+
+[65] OpRelacional → OperadorRelacional ExpresionNot
+[66] OpRelacional → ε
+
+[67] OperadorRelacional → IGUAL
+[68] OperadorRelacional → DIFERENTE
+[69] OperadorRelacional → MENOR
+[70] OperadorRelacional → MAYOR
+[71] OperadorRelacional → MENOR_IGUAL
+[72] OperadorRelacional → MAYOR_IGUAL
+
+[73] ExpresionNot → NOT ExpresionNot
+[74] ExpresionNot → ExpresionPrimaria
+
+[75] ExpresionPrimaria → NUMERO
+[76] ExpresionPrimaria → CADENA
+[77] ExpresionPrimaria → IDENTIFICADOR Accesos
+[78] ExpresionPrimaria → PAREN_IZQ Expresion PAREN_DER
+
+[79] Accesos → AccesoCampo
+[80] Accesos → AccesoArreglo
+[81] Accesos → ε
+
+[82] AccesoCampo → PUNTO IDENTIFICADOR AccesoArreglo
+
+[83] AccesoArreglo → CORCHETE_IZQ Expresion CORCHETE_DER
+[84] AccesoArreglo → ε
+
+================================================================================
+FIN DE GRAMÁTICA
+================================================================================

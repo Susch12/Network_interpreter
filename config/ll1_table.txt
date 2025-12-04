@@ -1,0 +1,455 @@
+════════════════════════════════════════════════════════════════════════
+TABLA DE ANÁLISIS PREDICTIVO LL(1)
+════════════════════════════════════════════════════════════════════════
+
+Esta tabla define la acción del parser para cada combinación de:
+  - No-Terminal (fila): símbolo en el tope de la pila
+  - Terminal (columna): token actual del input
+
+Formato: M[NoTerminal, Terminal] = Producción
+
+Total de entradas: 171
+Total de producciones: 84
+════════════════════════════════════════════════════════════════════════
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: Programa
+────────────────────────────────────────────────────────────────────────
+  M[Programa, Programa] = [1] Programa → PROGRAMA IDENTIFICADOR ; Definiciones Modulos BloqueInicio .
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: Definiciones
+────────────────────────────────────────────────────────────────────────
+  M[Definiciones, Define] = [2] Definiciones → DefMaquinas DefConcentradores DefCoaxiales
+  M[Definiciones, Inicio] = [3] Definiciones → ε
+  M[Definiciones, Modulo] = [3] Definiciones → ε
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: DefMaquinas
+────────────────────────────────────────────────────────────────────────
+  M[DefMaquinas, Define] = [4] DefMaquinas → DEFINE MAQUINAS ListaMaquinas ;
+  M[DefMaquinas, Inicio] = [5] DefMaquinas → ε
+  M[DefMaquinas, Modulo] = [5] DefMaquinas → ε
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: DefConcentradores
+────────────────────────────────────────────────────────────────────────
+  M[DefConcentradores, Define] = [6] DefConcentradores → DEFINE CONCENTRADORES ListaConcentradores ;
+  M[DefConcentradores, Inicio] = [7] DefConcentradores → ε
+  M[DefConcentradores, Modulo] = [7] DefConcentradores → ε
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: DefCoaxiales
+────────────────────────────────────────────────────────────────────────
+  M[DefCoaxiales, Define] = [8] DefCoaxiales → DEFINE TipoCoaxial ListaCoaxiales ;
+  M[DefCoaxiales, Inicio] = [9] DefCoaxiales → ε
+  M[DefCoaxiales, Modulo] = [9] DefCoaxiales → ε
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: TipoCoaxial
+────────────────────────────────────────────────────────────────────────
+  M[TipoCoaxial, Coaxial] = [10] TipoCoaxial → COAXIAL
+  M[TipoCoaxial, Segmento] = [11] TipoCoaxial → SEGMENTO
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: ListaMaquinas
+────────────────────────────────────────────────────────────────────────
+  M[ListaMaquinas, Identificador] = [12] ListaMaquinas → IDENTIFICADOR ListaMaquinas'
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: ListaMaquinas'
+────────────────────────────────────────────────────────────────────────
+  M[ListaMaquinas', Coma] = [13] ListaMaquinas' → , IDENTIFICADOR ListaMaquinas'
+  M[ListaMaquinas', PuntoYComa] = [14] ListaMaquinas' → ε
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: ListaConcentradores
+────────────────────────────────────────────────────────────────────────
+  M[ListaConcentradores, Identificador] = [15] ListaConcentradores → DeclConcentrador ListaConcentradores'
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: ListaConcentradores'
+────────────────────────────────────────────────────────────────────────
+  M[ListaConcentradores', Coma] = [16] ListaConcentradores' → , DeclConcentrador ListaConcentradores'
+  M[ListaConcentradores', PuntoYComa] = [17] ListaConcentradores' → ε
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: DeclConcentrador
+────────────────────────────────────────────────────────────────────────
+  M[DeclConcentrador, Identificador] = [18] DeclConcentrador → IDENTIFICADOR = NUMERO OpcionCoaxial
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: OpcionCoaxial
+────────────────────────────────────────────────────────────────────────
+  M[OpcionCoaxial, Coma] = [20] OpcionCoaxial → ε
+  M[OpcionCoaxial, Punto] = [19] OpcionCoaxial → . NUMERO
+  M[OpcionCoaxial, PuntoYComa] = [20] OpcionCoaxial → ε
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: ListaCoaxiales
+────────────────────────────────────────────────────────────────────────
+  M[ListaCoaxiales, Identificador] = [21] ListaCoaxiales → DeclCoaxial ListaCoaxiales'
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: ListaCoaxiales'
+────────────────────────────────────────────────────────────────────────
+  M[ListaCoaxiales', Coma] = [22] ListaCoaxiales' → , DeclCoaxial ListaCoaxiales'
+  M[ListaCoaxiales', PuntoYComa] = [23] ListaCoaxiales' → ε
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: DeclCoaxial
+────────────────────────────────────────────────────────────────────────
+  M[DeclCoaxial, Identificador] = [24] DeclCoaxial → IDENTIFICADOR = NUMERO
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: Modulos
+────────────────────────────────────────────────────────────────────────
+  M[Modulos, Inicio] = [26] Modulos → ε
+  M[Modulos, Modulo] = [25] Modulos → Modulo Modulos
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: Modulo
+────────────────────────────────────────────────────────────────────────
+  M[Modulo, Modulo] = [27] Modulo → MODULO IDENTIFICADOR ; BloqueInicio
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: BloqueInicio
+────────────────────────────────────────────────────────────────────────
+  M[BloqueInicio, Inicio] = [28] BloqueInicio → INICIO Sentencias FIN
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: Sentencias
+────────────────────────────────────────────────────────────────────────
+  M[Sentencias, AsignaMaquinaCoaxial] = [29] Sentencias → Sentencia Sentencias
+  M[Sentencias, AsignaPuerto] = [29] Sentencias → Sentencia Sentencias
+  M[Sentencias, Coloca] = [29] Sentencias → Sentencia Sentencias
+  M[Sentencias, ColocaCoaxial] = [29] Sentencias → Sentencia Sentencias
+  M[Sentencias, ColocaCoaxialConcentrador] = [29] Sentencias → Sentencia Sentencias
+  M[Sentencias, Escribe] = [29] Sentencias → Sentencia Sentencias
+  M[Sentencias, Fin] = [30] Sentencias → ε
+  M[Sentencias, Identificador] = [29] Sentencias → Sentencia Sentencias
+  M[Sentencias, MaquinaCoaxial] = [29] Sentencias → Sentencia Sentencias
+  M[Sentencias, Si] = [29] Sentencias → Sentencia Sentencias
+  M[Sentencias, UneMaquinaPuerto] = [29] Sentencias → Sentencia Sentencias
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: Sentencia
+────────────────────────────────────────────────────────────────────────
+  M[Sentencia, AsignaMaquinaCoaxial] = [37] Sentencia → SentenciaAsignaMaquinaCoaxial
+  M[Sentencia, AsignaPuerto] = [35] Sentencia → SentenciaAsignaPuerto
+  M[Sentencia, Coloca] = [31] Sentencia → SentenciaColoca
+  M[Sentencia, ColocaCoaxial] = [32] Sentencia → SentenciaColocaCoaxial
+  M[Sentencia, ColocaCoaxialConcentrador] = [33] Sentencia → SentenciaColocaCoaxialConcentrador
+  M[Sentencia, Escribe] = [38] Sentencia → SentenciaEscribe
+  M[Sentencia, Identificador] = [40] Sentencia → LlamadaModulo
+  M[Sentencia, MaquinaCoaxial] = [36] Sentencia → SentenciaMaquinaCoaxial
+  M[Sentencia, Si] = [39] Sentencia → SentenciaSi
+  M[Sentencia, UneMaquinaPuerto] = [34] Sentencia → SentenciaUneMaquinaPuerto
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: SentenciaColoca
+────────────────────────────────────────────────────────────────────────
+  M[SentenciaColoca, Coloca] = [41] SentenciaColoca → coloca ( IDENTIFICADOR , Expresion , Expresion ) ;
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: SentenciaColocaCoaxial
+────────────────────────────────────────────────────────────────────────
+  M[SentenciaColocaCoaxial, ColocaCoaxial] = [42] SentenciaColocaCoaxial → colocaCoaxial ( IDENTIFICADOR , Expresion , Expresion , Direccion ) ;
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: SentenciaColocaCoaxialConcentrador
+────────────────────────────────────────────────────────────────────────
+  M[SentenciaColocaCoaxialConcentrador, ColocaCoaxialConcentrador] = [43] SentenciaColocaCoaxialConcentrador → colocaCoaxialConcentrador ( IDENTIFICADOR , IDENTIFICADOR ) ;
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: SentenciaUneMaquinaPuerto
+────────────────────────────────────────────────────────────────────────
+  M[SentenciaUneMaquinaPuerto, UneMaquinaPuerto] = [44] SentenciaUneMaquinaPuerto → uneMaquinaPuerto ( IDENTIFICADOR , IDENTIFICADOR , Expresion ) ;
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: SentenciaAsignaPuerto
+────────────────────────────────────────────────────────────────────────
+  M[SentenciaAsignaPuerto, AsignaPuerto] = [45] SentenciaAsignaPuerto → asignaPuerto ( IDENTIFICADOR , IDENTIFICADOR ) ;
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: SentenciaMaquinaCoaxial
+────────────────────────────────────────────────────────────────────────
+  M[SentenciaMaquinaCoaxial, MaquinaCoaxial] = [46] SentenciaMaquinaCoaxial → maquinaCoaxial ( IDENTIFICADOR , IDENTIFICADOR , Expresion ) ;
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: SentenciaAsignaMaquinaCoaxial
+────────────────────────────────────────────────────────────────────────
+  M[SentenciaAsignaMaquinaCoaxial, AsignaMaquinaCoaxial] = [47] SentenciaAsignaMaquinaCoaxial → asignaMaquinaCoaxial ( IDENTIFICADOR , IDENTIFICADOR ) ;
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: SentenciaEscribe
+────────────────────────────────────────────────────────────────────────
+  M[SentenciaEscribe, Escribe] = [48] SentenciaEscribe → escribe ( Expresion ) ;
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: SentenciaSi
+────────────────────────────────────────────────────────────────────────
+  M[SentenciaSi, Si] = [49] SentenciaSi → SI Expresion INICIO Sentencias FIN OpcionSino
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: OpcionSino
+────────────────────────────────────────────────────────────────────────
+  M[OpcionSino, AsignaMaquinaCoaxial] = [51] OpcionSino → ε
+  M[OpcionSino, AsignaPuerto] = [51] OpcionSino → ε
+  M[OpcionSino, Coloca] = [51] OpcionSino → ε
+  M[OpcionSino, ColocaCoaxial] = [51] OpcionSino → ε
+  M[OpcionSino, ColocaCoaxialConcentrador] = [51] OpcionSino → ε
+  M[OpcionSino, Escribe] = [51] OpcionSino → ε
+  M[OpcionSino, Fin] = [51] OpcionSino → ε
+  M[OpcionSino, Identificador] = [51] OpcionSino → ε
+  M[OpcionSino, MaquinaCoaxial] = [51] OpcionSino → ε
+  M[OpcionSino, Si] = [51] OpcionSino → ε
+  M[OpcionSino, Sino] = [50] OpcionSino → SINO INICIO Sentencias FIN
+  M[OpcionSino, UneMaquinaPuerto] = [51] OpcionSino → ε
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: LlamadaModulo
+────────────────────────────────────────────────────────────────────────
+  M[LlamadaModulo, Identificador] = [52] LlamadaModulo → IDENTIFICADOR ;
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: Direccion
+────────────────────────────────────────────────────────────────────────
+  M[Direccion, Abajo] = [54] Direccion → abajo
+  M[Direccion, Arriba] = [53] Direccion → arriba
+  M[Direccion, Derecha] = [56] Direccion → derecha
+  M[Direccion, Izquierda] = [55] Direccion → izquierda
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: Expresion
+────────────────────────────────────────────────────────────────────────
+  M[Expresion, Cadena] = [57] Expresion → ExpresionOr
+  M[Expresion, Identificador] = [57] Expresion → ExpresionOr
+  M[Expresion, Not] = [57] Expresion → ExpresionOr
+  M[Expresion, Numero] = [57] Expresion → ExpresionOr
+  M[Expresion, ParenIzq] = [57] Expresion → ExpresionOr
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: ExpresionOr
+────────────────────────────────────────────────────────────────────────
+  M[ExpresionOr, Cadena] = [58] ExpresionOr → ExpresionAnd ExpresionOr'
+  M[ExpresionOr, Identificador] = [58] ExpresionOr → ExpresionAnd ExpresionOr'
+  M[ExpresionOr, Not] = [58] ExpresionOr → ExpresionAnd ExpresionOr'
+  M[ExpresionOr, Numero] = [58] ExpresionOr → ExpresionAnd ExpresionOr'
+  M[ExpresionOr, ParenIzq] = [58] ExpresionOr → ExpresionAnd ExpresionOr'
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: ExpresionOr'
+────────────────────────────────────────────────────────────────────────
+  M[ExpresionOr', Coma] = [60] ExpresionOr' → ε
+  M[ExpresionOr', CorcheteDer] = [60] ExpresionOr' → ε
+  M[ExpresionOr', Inicio] = [60] ExpresionOr' → ε
+  M[ExpresionOr', Or] = [59] ExpresionOr' → || ExpresionAnd ExpresionOr'
+  M[ExpresionOr', ParenDer] = [60] ExpresionOr' → ε
+  M[ExpresionOr', PuntoYComa] = [60] ExpresionOr' → ε
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: ExpresionAnd
+────────────────────────────────────────────────────────────────────────
+  M[ExpresionAnd, Cadena] = [61] ExpresionAnd → ExpresionRelacional ExpresionAnd'
+  M[ExpresionAnd, Identificador] = [61] ExpresionAnd → ExpresionRelacional ExpresionAnd'
+  M[ExpresionAnd, Not] = [61] ExpresionAnd → ExpresionRelacional ExpresionAnd'
+  M[ExpresionAnd, Numero] = [61] ExpresionAnd → ExpresionRelacional ExpresionAnd'
+  M[ExpresionAnd, ParenIzq] = [61] ExpresionAnd → ExpresionRelacional ExpresionAnd'
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: ExpresionAnd'
+────────────────────────────────────────────────────────────────────────
+  M[ExpresionAnd', And] = [62] ExpresionAnd' → && ExpresionRelacional ExpresionAnd'
+  M[ExpresionAnd', Coma] = [63] ExpresionAnd' → ε
+  M[ExpresionAnd', CorcheteDer] = [63] ExpresionAnd' → ε
+  M[ExpresionAnd', Inicio] = [63] ExpresionAnd' → ε
+  M[ExpresionAnd', Or] = [63] ExpresionAnd' → ε
+  M[ExpresionAnd', ParenDer] = [63] ExpresionAnd' → ε
+  M[ExpresionAnd', PuntoYComa] = [63] ExpresionAnd' → ε
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: ExpresionRelacional
+────────────────────────────────────────────────────────────────────────
+  M[ExpresionRelacional, Cadena] = [64] ExpresionRelacional → ExpresionNot OpRelacional
+  M[ExpresionRelacional, Identificador] = [64] ExpresionRelacional → ExpresionNot OpRelacional
+  M[ExpresionRelacional, Not] = [64] ExpresionRelacional → ExpresionNot OpRelacional
+  M[ExpresionRelacional, Numero] = [64] ExpresionRelacional → ExpresionNot OpRelacional
+  M[ExpresionRelacional, ParenIzq] = [64] ExpresionRelacional → ExpresionNot OpRelacional
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: OpRelacional
+────────────────────────────────────────────────────────────────────────
+  M[OpRelacional, And] = [66] OpRelacional → ε
+  M[OpRelacional, Coma] = [66] OpRelacional → ε
+  M[OpRelacional, CorcheteDer] = [66] OpRelacional → ε
+  M[OpRelacional, Diferente] = [65] OpRelacional → OperadorRelacional ExpresionNot
+  M[OpRelacional, Igual] = [65] OpRelacional → OperadorRelacional ExpresionNot
+  M[OpRelacional, Inicio] = [66] OpRelacional → ε
+  M[OpRelacional, Mayor] = [65] OpRelacional → OperadorRelacional ExpresionNot
+  M[OpRelacional, MayorIgual] = [65] OpRelacional → OperadorRelacional ExpresionNot
+  M[OpRelacional, Menor] = [65] OpRelacional → OperadorRelacional ExpresionNot
+  M[OpRelacional, MenorIgual] = [65] OpRelacional → OperadorRelacional ExpresionNot
+  M[OpRelacional, Or] = [66] OpRelacional → ε
+  M[OpRelacional, ParenDer] = [66] OpRelacional → ε
+  M[OpRelacional, PuntoYComa] = [66] OpRelacional → ε
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: OperadorRelacional
+────────────────────────────────────────────────────────────────────────
+  M[OperadorRelacional, Diferente] = [68] OperadorRelacional → <>
+  M[OperadorRelacional, Igual] = [67] OperadorRelacional → =
+  M[OperadorRelacional, Mayor] = [70] OperadorRelacional → >
+  M[OperadorRelacional, MayorIgual] = [72] OperadorRelacional → >=
+  M[OperadorRelacional, Menor] = [69] OperadorRelacional → <
+  M[OperadorRelacional, MenorIgual] = [71] OperadorRelacional → <=
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: ExpresionNot
+────────────────────────────────────────────────────────────────────────
+  M[ExpresionNot, Cadena] = [74] ExpresionNot → ExpresionPrimaria
+  M[ExpresionNot, Identificador] = [74] ExpresionNot → ExpresionPrimaria
+  M[ExpresionNot, Not] = [73] ExpresionNot → ! ExpresionNot
+  M[ExpresionNot, Numero] = [74] ExpresionNot → ExpresionPrimaria
+  M[ExpresionNot, ParenIzq] = [74] ExpresionNot → ExpresionPrimaria
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: ExpresionPrimaria
+────────────────────────────────────────────────────────────────────────
+  M[ExpresionPrimaria, Cadena] = [76] ExpresionPrimaria → CADENA
+  M[ExpresionPrimaria, Identificador] = [77] ExpresionPrimaria → IDENTIFICADOR Accesos
+  M[ExpresionPrimaria, Numero] = [75] ExpresionPrimaria → NUMERO
+  M[ExpresionPrimaria, ParenIzq] = [78] ExpresionPrimaria → ( Expresion )
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: Accesos
+────────────────────────────────────────────────────────────────────────
+  M[Accesos, And] = [81] Accesos → ε
+  M[Accesos, Coma] = [81] Accesos → ε
+  M[Accesos, CorcheteDer] = [81] Accesos → ε
+  M[Accesos, CorcheteIzq] = [80] Accesos → AccesoArreglo
+  M[Accesos, Diferente] = [81] Accesos → ε
+  M[Accesos, Igual] = [81] Accesos → ε
+  M[Accesos, Inicio] = [81] Accesos → ε
+  M[Accesos, Mayor] = [81] Accesos → ε
+  M[Accesos, MayorIgual] = [81] Accesos → ε
+  M[Accesos, Menor] = [81] Accesos → ε
+  M[Accesos, MenorIgual] = [81] Accesos → ε
+  M[Accesos, Or] = [81] Accesos → ε
+  M[Accesos, ParenDer] = [81] Accesos → ε
+  M[Accesos, Punto] = [79] Accesos → AccesoCampo
+  M[Accesos, PuntoYComa] = [81] Accesos → ε
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: AccesoCampo
+────────────────────────────────────────────────────────────────────────
+  M[AccesoCampo, Punto] = [82] AccesoCampo → . IDENTIFICADOR AccesoArreglo
+
+────────────────────────────────────────────────────────────────────────
+No-Terminal: AccesoArreglo
+────────────────────────────────────────────────────────────────────────
+  M[AccesoArreglo, And] = [84] AccesoArreglo → ε
+  M[AccesoArreglo, Coma] = [84] AccesoArreglo → ε
+  M[AccesoArreglo, CorcheteDer] = [84] AccesoArreglo → ε
+  M[AccesoArreglo, CorcheteIzq] = [83] AccesoArreglo → [ Expresion ]
+  M[AccesoArreglo, Diferente] = [84] AccesoArreglo → ε
+  M[AccesoArreglo, Igual] = [84] AccesoArreglo → ε
+  M[AccesoArreglo, Inicio] = [84] AccesoArreglo → ε
+  M[AccesoArreglo, Mayor] = [84] AccesoArreglo → ε
+  M[AccesoArreglo, MayorIgual] = [84] AccesoArreglo → ε
+  M[AccesoArreglo, Menor] = [84] AccesoArreglo → ε
+  M[AccesoArreglo, MenorIgual] = [84] AccesoArreglo → ε
+  M[AccesoArreglo, Or] = [84] AccesoArreglo → ε
+  M[AccesoArreglo, ParenDer] = [84] AccesoArreglo → ε
+  M[AccesoArreglo, PuntoYComa] = [84] AccesoArreglo → ε
+
+════════════════════════════════════════════════════════════════════════
+LISTA COMPLETA DE PRODUCCIONES
+════════════════════════════════════════════════════════════════════════
+
+[ 1] Programa → PROGRAMA IDENTIFICADOR ; Definiciones Modulos BloqueInicio .
+[ 2] Definiciones → DefMaquinas DefConcentradores DefCoaxiales
+[ 3] Definiciones → ε
+[ 4] DefMaquinas → DEFINE MAQUINAS ListaMaquinas ;
+[ 5] DefMaquinas → ε
+[ 6] DefConcentradores → DEFINE CONCENTRADORES ListaConcentradores ;
+[ 7] DefConcentradores → ε
+[ 8] DefCoaxiales → DEFINE TipoCoaxial ListaCoaxiales ;
+[ 9] DefCoaxiales → ε
+[10] TipoCoaxial → COAXIAL
+[11] TipoCoaxial → SEGMENTO
+[12] ListaMaquinas → IDENTIFICADOR ListaMaquinas'
+[13] ListaMaquinas' → , IDENTIFICADOR ListaMaquinas'
+[14] ListaMaquinas' → ε
+[15] ListaConcentradores → DeclConcentrador ListaConcentradores'
+[16] ListaConcentradores' → , DeclConcentrador ListaConcentradores'
+[17] ListaConcentradores' → ε
+[18] DeclConcentrador → IDENTIFICADOR = NUMERO OpcionCoaxial
+[19] OpcionCoaxial → . NUMERO
+[20] OpcionCoaxial → ε
+[21] ListaCoaxiales → DeclCoaxial ListaCoaxiales'
+[22] ListaCoaxiales' → , DeclCoaxial ListaCoaxiales'
+[23] ListaCoaxiales' → ε
+[24] DeclCoaxial → IDENTIFICADOR = NUMERO
+[25] Modulos → Modulo Modulos
+[26] Modulos → ε
+[27] Modulo → MODULO IDENTIFICADOR ; BloqueInicio
+[28] BloqueInicio → INICIO Sentencias FIN
+[29] Sentencias → Sentencia Sentencias
+[30] Sentencias → ε
+[31] Sentencia → SentenciaColoca
+[32] Sentencia → SentenciaColocaCoaxial
+[33] Sentencia → SentenciaColocaCoaxialConcentrador
+[34] Sentencia → SentenciaUneMaquinaPuerto
+[35] Sentencia → SentenciaAsignaPuerto
+[36] Sentencia → SentenciaMaquinaCoaxial
+[37] Sentencia → SentenciaAsignaMaquinaCoaxial
+[38] Sentencia → SentenciaEscribe
+[39] Sentencia → SentenciaSi
+[40] Sentencia → LlamadaModulo
+[41] SentenciaColoca → coloca ( IDENTIFICADOR , Expresion , Expresion ) ;
+[42] SentenciaColocaCoaxial → colocaCoaxial ( IDENTIFICADOR , Expresion , Expresion , Direccion ) ;
+[43] SentenciaColocaCoaxialConcentrador → colocaCoaxialConcentrador ( IDENTIFICADOR , IDENTIFICADOR ) ;
+[44] SentenciaUneMaquinaPuerto → uneMaquinaPuerto ( IDENTIFICADOR , IDENTIFICADOR , Expresion ) ;
+[45] SentenciaAsignaPuerto → asignaPuerto ( IDENTIFICADOR , IDENTIFICADOR ) ;
+[46] SentenciaMaquinaCoaxial → maquinaCoaxial ( IDENTIFICADOR , IDENTIFICADOR , Expresion ) ;
+[47] SentenciaAsignaMaquinaCoaxial → asignaMaquinaCoaxial ( IDENTIFICADOR , IDENTIFICADOR ) ;
+[48] SentenciaEscribe → escribe ( Expresion ) ;
+[49] SentenciaSi → SI Expresion INICIO Sentencias FIN OpcionSino
+[50] OpcionSino → SINO INICIO Sentencias FIN
+[51] OpcionSino → ε
+[52] LlamadaModulo → IDENTIFICADOR ;
+[53] Direccion → arriba
+[54] Direccion → abajo
+[55] Direccion → izquierda
+[56] Direccion → derecha
+[57] Expresion → ExpresionOr
+[58] ExpresionOr → ExpresionAnd ExpresionOr'
+[59] ExpresionOr' → || ExpresionAnd ExpresionOr'
+[60] ExpresionOr' → ε
+[61] ExpresionAnd → ExpresionRelacional ExpresionAnd'
+[62] ExpresionAnd' → && ExpresionRelacional ExpresionAnd'
+[63] ExpresionAnd' → ε
+[64] ExpresionRelacional → ExpresionNot OpRelacional
+[65] OpRelacional → OperadorRelacional ExpresionNot
+[66] OpRelacional → ε
+[67] OperadorRelacional → =
+[68] OperadorRelacional → <>
+[69] OperadorRelacional → <
+[70] OperadorRelacional → >
+[71] OperadorRelacional → <=
+[72] OperadorRelacional → >=
+[73] ExpresionNot → ! ExpresionNot
+[74] ExpresionNot → ExpresionPrimaria
+[75] ExpresionPrimaria → NUMERO
+[76] ExpresionPrimaria → CADENA
+[77] ExpresionPrimaria → IDENTIFICADOR Accesos
+[78] ExpresionPrimaria → ( Expresion )
+[79] Accesos → AccesoCampo
+[80] Accesos → AccesoArreglo
+[81] Accesos → ε
+[82] AccesoCampo → . IDENTIFICADOR AccesoArreglo
+[83] AccesoArreglo → [ Expresion ]
+[84] AccesoArreglo → ε
+
+════════════════════════════════════════════════════════════════════════

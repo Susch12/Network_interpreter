@@ -1,0 +1,148 @@
+METADATA
+name: NetworkLanguageLexer
+version: 2.0
+description: Lexer para lenguaje de topologias de red
+initial_state: q0
+END_METADATA
+
+STATES
+# Estado inicial
+q0
+
+# Identificadores y palabras reservadas
+q_id FINAL:IDENTIFIER
+
+# Números
+q_num FINAL:NUMBER
+
+# Cadenas
+q_str
+q_str_esc
+q_str_end FINAL:STRING
+
+# Operadores relacionales
+q_op_eq FINAL:EQUAL
+q_op_lt FINAL:LESS
+q_op_lt_eq FINAL:LESS_EQUAL
+q_op_ne FINAL:NOT_EQUAL
+q_op_gt FINAL:GREATER
+q_op_gt_eq FINAL:GREATER_EQUAL
+
+# Operadores lógicos
+q_and1
+q_and2 FINAL:AND
+q_or1
+q_or2 FINAL:OR
+q_not FINAL:NOT
+
+# Delimitadores
+q_comma FINAL:COMMA
+q_semicolon FINAL:SEMICOLON
+q_dot FINAL:DOT
+q_lparen FINAL:LPAREN
+q_rparen FINAL:RPAREN
+q_lbracket FINAL:LBRACKET
+q_rbracket FINAL:RBRACKET
+
+# Espacios en blanco
+q_ws FINAL:WHITESPACE
+
+# Comentarios
+q_slash
+q_comment FINAL:COMMENT
+
+# Error
+q_error FINAL:ERROR
+
+END_STATES
+
+TRANSITIONS
+# Identificadores y palabras reservadas
+q0, [a-zA-Z_], q_id
+q_id, [a-zA-Z0-9_], q_id
+
+# Números enteros
+q0, [0-9], q_num
+q_num, [0-9], q_num
+
+# Cadenas literales
+q0, ", q_str
+q_str, ANY, q_str
+q_str, \\, q_str_esc
+q_str_esc, ANY, q_str
+q_str, ", q_str_end
+
+# Operadores relacionales
+q0, =, q_op_eq
+q0, <, q_op_lt
+q_op_lt, =, q_op_lt_eq
+q_op_lt, >, q_op_ne
+q0, >, q_op_gt
+q_op_gt, =, q_op_gt_eq
+
+# Operadores lógicos
+q0, &, q_and1
+q_and1, &, q_and2
+q0, |, q_or1
+q_or1, |, q_or2
+q0, !, q_not
+
+# Delimitadores
+q0, ,, q_comma
+q0, ;, q_semicolon
+q0, ., q_dot
+q0, (, q_lparen
+q0, ), q_rparen
+q0, [, q_lbracket
+q0, ], q_rbracket
+
+# Espacios en blanco (espacio, tab, retorno de carro, nueva línea)
+q0, \s, q_ws
+q0, \t, q_ws
+q0, \r, q_ws
+q0, \n, q_ws
+q_ws, \s, q_ws
+q_ws, \t, q_ws
+q_ws, \r, q_ws
+q_ws, \n, q_ws
+
+# Comentarios de línea //
+q0, /, q_slash
+q_slash, /, q_comment
+q_comment, NOTNL, q_comment
+
+END_TRANSITIONS
+
+KEYWORDS
+# Estructura del programa (case-insensitive)
+programa, PROGRAMA
+define, DEFINE
+maquinas, MAQUINAS
+concentradores, CONCENTRADORES
+coaxial, COAXIAL
+segmento, SEGMENTO
+modulo, MODULO
+inicio, INICIO
+fin, FIN
+
+# Control de flujo (case-insensitive)
+si, SI
+sino, SINO
+
+# Funciones del lenguaje (case-sensitive - estas deben coincidir exactamente)
+coloca, COLOCA
+colocaCoaxial, COLOCA_COAXIAL
+colocaCoaxialConcentrador, COLOCA_COAXIAL_CONCENTRADOR
+uneMaquinaPuerto, UNE_MAQUINA_PUERTO
+asignaPuerto, ASIGNA_PUERTO
+maquinaCoaxial, MAQUINA_COAXIAL
+asignaMaquinaCoaxial, ASIGNA_MAQUINA_COAXIAL
+escribe, ESCRIBE
+
+# Direcciones (case-insensitive)
+arriba, ARRIBA
+abajo, ABAJO
+izquierda, IZQUIERDA
+derecha, DERECHA
+
+END_KEYWORDS
